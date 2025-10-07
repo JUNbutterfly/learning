@@ -1,7 +1,7 @@
 #define weiku 0
 #define shaoxian 1
 #define zhengchang 2
-#define TASTE shaoxian //weiku,shaoxian,zhengchang
+#define TASTE weiku //weiku,shaoxian,zhengchang
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -29,13 +29,13 @@ double convert(){
 
     for (int i =  (negative ? 1 : 0), i_ = 0;i < y_; i++,i_++){
      intermediate[i_] = (int)(x[i] - '0');
-     if (intermediate[i_]  > 9 || intermediate[i_] < 0){err = 0;return -461.0;}       //对输入进行判断
+     if (intermediate[i_]  > 9 || intermediate[i_] < 0){err = 0;free(intermediate);return -461.0;}       //对输入进行判断
   }
      if (ptr){
      if ((int)(*(ptr + 1) - '0') < 10 && (int)(*(ptr+1) - '0') > -1){
       intermediate[y-1] = (int)(*(ptr + 1) -'0');
-      } else {err = 1;return -461.0;}
-    } else {intermediate[y-1] = 0;}
+      } else {err = 1;free(intermediate);return -461.0;}
+    } 
   
 //      for (int i = 0; i < y; i++){
  //   printf("\ndebug%d",intermediate[i]);
@@ -44,13 +44,14 @@ double convert(){
       for (int i = 0;i < y - 1;i++){
        temp += power_10(y - i - 2,1) * intermediate[i];
       }
-
+      int small_number = intermediate[y-1];
+      free(intermediate);
       if (negative){
-      if (temp < 459 || (temp == 459 && intermediate[y-1] <= 6)){
-        return (0 - temp - intermediate[y-1] * 0.1);
+      if (temp < 459 || (temp == 459 && small_number <= 6)){
+        return (0 - temp - small_number * 0.1);
       } else {err = 2;return -461.0;}
         }
-       else { return temp + intermediate[y-1] * 0.1;}
+       else { return temp + small_number * 0.1;}
       return -461.0; 
     }
 int main(){
